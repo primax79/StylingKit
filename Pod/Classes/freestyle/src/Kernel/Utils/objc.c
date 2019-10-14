@@ -47,7 +47,11 @@ void* callSuper0(id self, Class superClass, SEL _cmd)
 	struct objc_super super;
 	super.receiver = (__bridge void *)self;
 	super.class = superClass != NULL ? superClass : class_getSuperclass(object_getClass(self));
-	return objc_msgSendSuper(&super, preprocessSEL(_cmd));
+	//return objc_msgSendSuper(&super, preprocessSEL(_cmd));
+
+  // https://stackoverflow.com/questions/58116456/too-many-arguments-to-function-call-expected-0-have-2/58132413#58132413
+  void* (*objc_msgSendSuperTyped)(id self, SEL _cmd) = (void*)objc_msgSendSuper;
+  return objc_msgSendSuperTyped((id) &super, preprocessSEL(_cmd));
 }
 
 void* callSuper1(id self, Class superClass, SEL _cmd, id arg1)
