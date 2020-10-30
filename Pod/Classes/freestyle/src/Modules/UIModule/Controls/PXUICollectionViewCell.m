@@ -134,8 +134,9 @@ static const char STYLE_CHILDREN;
         stylers = @[
             PXTransformStyler.sharedInstance,
 
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUICollectionViewCell *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                view.px_contentView.alpha = context.opacity;
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUICollectionViewCell *item = (PXUICollectionViewCell *)view;
+                item.px_contentView.alpha = context.opacity;
             }],
 
             PXShapeStyler.sharedInstance,

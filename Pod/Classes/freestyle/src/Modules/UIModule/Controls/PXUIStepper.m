@@ -152,8 +152,8 @@ static char const STYLE_CHILDREN;
             PXLayoutStyler.sharedInstance,
             PXOpacityStyler.sharedInstance,
 
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(PXUIStepper *view, PXPaintStyler *styler, PXStylerContext *context) {
-                
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                PXUIStepper *item = (PXUIStepper *)view;
                 if ([PXUtils isIOS6OrGreater])
                 {
                     UIColor *color = (UIColor *)[context propertyValueForName:@"color"];

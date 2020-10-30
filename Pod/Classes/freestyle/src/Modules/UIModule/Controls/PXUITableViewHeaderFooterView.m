@@ -207,8 +207,8 @@ static NSDictionary *LABEL_PSEUDOCLASS_MAP;
         attributedTextLabel.defaultPseudoClass = @"normal";
         
         attributedTextLabel.viewStylers = @[
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id v, PXAttributedTextStyler *styler, PXStylerContext *context) {
+                PXVirtualStyleableControl *styleable = (PXVirtualStyleableControl *)v;
                 UILabel *view = weakSelf.textLabel;
                 UIControlState state = ([context stateFromStateNameMap:LABEL_PSEUDOCLASS_MAP]);
                 
@@ -259,8 +259,9 @@ static NSDictionary *LABEL_PSEUDOCLASS_MAP;
         stylers = @[
             PXTransformStyler.sharedInstance,
 
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUITableViewHeaderFooterView *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                view.px_contentView.alpha = context.opacity;
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUITableViewHeaderFooterView *item = (PXUITableViewHeaderFooterView *)view;
+                item.px_contentView.alpha = context.opacity;
             }],
 
             PXShapeStyler.sharedInstance,

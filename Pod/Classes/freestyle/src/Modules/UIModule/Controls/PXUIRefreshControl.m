@@ -54,8 +54,8 @@
             PXOpacityStyler.sharedInstance,
 
             
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(PXUIRefreshControl *view, PXPaintStyler *styler, PXStylerContext *context) {
-                
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                PXUIRefreshControl *item = (PXUIRefreshControl *) view;
                 UIColor *color = (UIColor *)[context propertyValueForName:@"color"];
                 
                 if(color == nil)
@@ -65,7 +65,7 @@
                 
                 if(color)
                 {
-                    [view px_setTintColor:color];
+                    [item px_setTintColor:color];
                 }
             }],
             

@@ -125,7 +125,8 @@ static char const STYLE_CHILDREN;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(PXUISegmentedControl *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
+                PXUISegmentedControl * item = (PXUISegmentedControl *)view;
                 PXShadow *shadow = context.textShadow;
                 NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:[view titleTextAttributesForState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]]];
 
@@ -140,8 +141,8 @@ static char const STYLE_CHILDREN;
                 [view px_setTitleTextAttributes:currentTextAttributes forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
             }],
 
-            [[PXFontStyler alloc] initWithCompletionBlock:^(PXUISegmentedControl *view, PXFontStyler *styler, PXStylerContext *context) {
-
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                PXUISegmentedControl * item = (PXUISegmentedControl *)view;
                 NSMutableDictionary *currentTextAttributes = [NSMutableDictionary
                                                               dictionaryWithDictionary:[view titleTextAttributesForState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]]];
 
@@ -151,8 +152,8 @@ static char const STYLE_CHILDREN;
                                        forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
             }],
 
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(PXUISegmentedControl *view, PXPaintStyler *styler, PXStylerContext *context) {
-
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                PXUISegmentedControl * item = (PXUISegmentedControl *)view;
                 NSMutableDictionary *currentTextAttributes = [NSMutableDictionary
                                                               dictionaryWithDictionary:[view titleTextAttributesForState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]]];
                 UIColor *color = (UIColor *)[context propertyValueForName:@"color"];

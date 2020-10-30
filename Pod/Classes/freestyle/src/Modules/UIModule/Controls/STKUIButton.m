@@ -127,8 +127,9 @@ static const char STYLE_CHILDREN;
         
         attributedText.viewStylers =
         @[
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^( id<PXStyleable> view, PXAttributedTextStyler *styler, PXStylerContext *context) {
+                PXVirtualStyleableControl *styleable = (PXVirtualStyleableControl*) view;
+                
                 UIControlState state = ([context stateFromStateNameMap:PSEUDOCLASS_MAP]);
                 
                 NSAttributedString *stateTextAttr = [weakSelf attributedTitleForState:state];
@@ -189,13 +190,14 @@ static const char STYLE_CHILDREN;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(STKUIButton *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
                 PXShadow *shadow = context.textShadow;
 
                 if (shadow)
                 {
-                    [view px_setTitleShadowColor: shadow.color forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
-                    view.px_titleLabel.shadowOffset = CGSizeMake(shadow.horizontalOffset, shadow.verticalOffset);
+                    [item px_setTitleShadowColor: shadow.color forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
+                    item.px_titleLabel.shadowOffset = CGSizeMake(shadow.horizontalOffset, shadow.verticalOffset);
 
                     /*
                     NSMutableDictionary *attrs = [[NSMutableDictionary alloc] init];
@@ -215,11 +217,15 @@ static const char STYLE_CHILDREN;
                 }
             }],
 
-            [[PXFontStyler alloc] initWithCompletionBlock:^(STKUIButton *view, PXFontStyler *styler, PXStylerContext *context) {
-                view.px_titleLabel.font = context.font;
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
+                item.px_titleLabel.font = context.font;
             }],
 
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(STKUIButton *view, PXPaintStyler *styler, PXStylerContext *context) {
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                
+                STKUIButton *item = (STKUIButton*) view;
+                
                 UIColor *color = (UIColor *)[context propertyValueForName:@"color"];
                 if(color)
                 {
@@ -233,18 +239,22 @@ static const char STYLE_CHILDREN;
                 }
             }],
 
-            [[PXInsetStyler alloc] initWithBaseName:@"content-edge" completionBlock:^(STKUIButton *view, PXInsetStyler *styler, PXStylerContext *context) {
-                [view px_setContentEdgeInsets:styler.insets];
+            [[PXInsetStyler alloc] initWithBaseName:@"content-edge" completionBlock:^(id view, PXInsetStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
+                [item px_setContentEdgeInsets:styler.insets];
             }],
-            [[PXInsetStyler alloc] initWithBaseName:@"title-edge" completionBlock:^(STKUIButton *view, PXInsetStyler *styler, PXStylerContext *context) {
-                [view px_setTitleEdgeInsets:styler.insets];
+            [[PXInsetStyler alloc] initWithBaseName:@"title-edge" completionBlock:^(id view, PXInsetStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
+                [item px_setTitleEdgeInsets:styler.insets];
             }],
-            [[PXInsetStyler alloc] initWithBaseName:@"image-edge" completionBlock:^(STKUIButton *view, PXInsetStyler *styler, PXStylerContext *context) {
-                [view px_setImageEdgeInsets:styler.insets];
+            [[PXInsetStyler alloc] initWithBaseName:@"image-edge" completionBlock:^(id view, PXInsetStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
+                [item px_setImageEdgeInsets:styler.insets];
             }],
 
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(STKUIButton *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                [view px_setTitle:context.text forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id view, PXTextContentStyler *styler, PXStylerContext *context) {
+                STKUIButton *item = (STKUIButton*) view;
+                [item px_setTitle:context.text forState:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
             }],
 
             [[PXGenericStyler alloc] initWithHandlers: @{

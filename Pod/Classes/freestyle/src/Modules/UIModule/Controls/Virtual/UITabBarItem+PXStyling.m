@@ -98,20 +98,21 @@ static NSDictionary *PSEUDOCLASS_MAP;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(UIBarButtonItem *view, PXAttributedTextStyler *styler, PXStylerContext *context) {
-                
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, id<PXStyler> styler, PXStylerContext *context) {
+                UIBarButtonItem *item = (UIBarButtonItem *) view;
                 UIControlState state = ([context stateFromStateNameMap:PSEUDOCLASS_MAP]) ? [context stateFromStateNameMap:PSEUDOCLASS_MAP] : UIControlStateNormal;
                 
-                NSDictionary *attribs = [view titleTextAttributesForState:state];
+                NSDictionary *attribs = [item titleTextAttributesForState:state];
                 
                 NSDictionary *mergedAttribs = [context mergeTextAttributes:attribs];
                 
-                [view setTitleTextAttributes:mergedAttribs
+                [item setTitleTextAttributes:mergedAttribs
                                     forState:state];
             }],
             
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(UIBarButtonItem *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                view.title = context.text;
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, id<PXStyler> styler, PXStylerContext *context) {
+                UIBarButtonItem *item = (UIBarButtonItem*)view;
+                item.title = context.text;
             }],
         ];
     });

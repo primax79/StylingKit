@@ -100,8 +100,9 @@ NSString *const kDefaultCacheLabelLineBreakMode = @"label.lineBreakMode";
         
         attributedText.viewStylers = @[
                                        
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, PXAttributedTextStyler *styler, PXStylerContext *context) {
                 
+                PXVirtualStyleableControl *styleable = (PXVirtualStyleableControl*) view;
                 UIControlState state = ([context stateFromStateNameMap:PSEUDOCLASS_MAP]) ?
                     [context stateFromStateNameMap:PSEUDOCLASS_MAP] : UIControlStateNormal;
                 
@@ -184,35 +185,41 @@ NSString *const kDefaultCacheLabelLineBreakMode = @"label.lineBreakMode";
 
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(STKUILabel *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, PXTextContentStyler *styler, PXStylerContext *context) {
+                STKUILabel *item = (STKUILabel*) view;
                 PXShadow *shadow = context.textShadow;
 
-                [view px_setShadowColor: shadow.color];
-                [view px_setShadowOffset: CGSizeMake(shadow.horizontalOffset, shadow.verticalOffset)];
+                [item px_setShadowColor: shadow.color];
+                [item px_setShadowOffset: CGSizeMake(shadow.horizontalOffset, shadow.verticalOffset)];
             }],
             
-            [[PXFontStyler alloc] initWithCompletionBlock:^(STKUILabel *view, PXFontStyler *styler, PXStylerContext *context) {
-                [view px_setFont:context.font];
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, PXFontStyler *styler, PXStylerContext *context) {
+                STKUILabel *item = (STKUILabel*) view;
+
+                [item px_setFont:context.font];
             }],
             
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(STKUILabel *view, PXPaintStyler *styler, PXStylerContext *context) {
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, PXPaintStyler *styler, PXStylerContext *context) {
+                STKUILabel *item = (STKUILabel*) view;
+
                 UIColor *color = (UIColor *)[context propertyValueForName:@"color"];
                 
                 if(color)
                 {
                     if([context stateFromStateNameMap:PSEUDOCLASS_MAP] == UIControlStateHighlighted)
                     {
-                        [view px_setHighlightedTextColor:color];
+                        [item px_setHighlightedTextColor:color];
                     }
                     else
                     {
-                        [view px_setTextColor:color];
+                        [item px_setTextColor:color];
                     }
                 }
             }],
             
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(STKUILabel *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                [view px_setText:context.text];
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, PXTextContentStyler *styler, PXStylerContext *context) {
+                STKUILabel *item = (STKUILabel*) view;
+                [item px_setText:context.text];
             }],
                 
             [[PXGenericStyler alloc] initWithHandlers: @{

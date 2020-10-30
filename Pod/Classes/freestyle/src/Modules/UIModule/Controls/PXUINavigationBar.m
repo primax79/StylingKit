@@ -194,7 +194,7 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
                 }
             }],
 
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
                PXShadow *shadow = context.textShadow;
                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:weakSelf.titleTextAttributes];
                
@@ -209,7 +209,7 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
                [weakSelf px_setTitleTextAttributes:currentTextAttributes];
             }],
 
-            [[PXFontStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *view, PXFontStyler *styler, PXStylerContext *context) {
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:weakSelf.titleTextAttributes];
                
                currentTextAttributes[NSFontAttributeName] = context.font;
@@ -222,7 +222,7 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
                 }
             }],
 
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *view, PXPaintStyler *styler, PXStylerContext *context) {
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
                 
                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:weakSelf.titleTextAttributes];
                
@@ -335,8 +335,10 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
             PXTransformStyler.sharedInstance,
             PXLayoutStyler.sharedInstance,
 
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                [view px_setTranslucent:(context.opacity < 1.0) ? YES : NO];
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
+
+                [item px_setTranslucent:(context.opacity < 1.0) ? YES : NO];
             }],
 
             PXShapeStyler.sharedInstance,
@@ -344,15 +346,17 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
             
-            [[PXBarMetricsAdjustmentStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXBarMetricsAdjustmentStyler *styler, PXStylerContext *context) {
+            [[PXBarMetricsAdjustmentStyler alloc] initWithCompletionBlock:^(id view, PXBarMetricsAdjustmentStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
                 PXDimension *offset = context.barMetricsVerticalOffset;
                 CGFloat value = (offset) ? offset.points.number : 0.0f;
                 
-                [view px_setTitleVerticalPositionAdjustment:value forBarMetrics:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
+                [item px_setTitleVerticalPositionAdjustment:value forBarMetrics:[context stateFromStateNameMap:PSEUDOCLASS_MAP]];
             }],
 
-            [[PXPaintStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXPaintStyler *styler, PXStylerContext *context) {
-                
+            [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
+
                 if([PXUtils isIOS7OrGreater])
                 {
                     UIColor *color = (UIColor *)[context propertyValueForName:@"color"];
@@ -363,7 +367,7 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
                 }
                 else // @deprecated in 1.1 (this else statement only)
                 {
-                    NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:view.titleTextAttributes];
+                    NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:item.titleTextAttributes];
                     
                     UIColor *color = (UIColor *)[context propertyValueForName:@"color"];
                     
@@ -384,9 +388,10 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
             }],
             
             // @deprecated in 1.1
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
                 PXShadow *shadow = context.textShadow;
-                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:view.titleTextAttributes];
+                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:item.titleTextAttributes];
                 
                 NSShadow *nsShadow = [[NSShadow alloc] init];
                 
@@ -396,16 +401,17 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
                 
                 currentTextAttributes[NSShadowAttributeName] = nsShadow;
                 
-                [view px_setTitleTextAttributes:currentTextAttributes];
+                [item px_setTitleTextAttributes:currentTextAttributes];
             }],
             
             // @deprecated in 1.1
-            [[PXFontStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXFontStyler *styler, PXStylerContext *context) {
-                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:view.titleTextAttributes];
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
+                NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:item.titleTextAttributes];
                 
                 currentTextAttributes[NSFontAttributeName] = context.font;
                 
-                [view px_setTitleTextAttributes:currentTextAttributes];
+                [item px_setTitleTextAttributes:currentTextAttributes];
                 
                 if([PXUtils isBeforeIOS7O])
                 {
@@ -414,18 +420,19 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
             }],
 
             // shadow-* image properties
-            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(PXUINavigationBar *view, PXBarShadowStyler *styler, PXStylerContext *context) {
+            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(id view, PXBarShadowStyler *styler, PXStylerContext *context) {
+                PXUINavigationBar *item = (PXUINavigationBar *)view;
                 // iOS 6.x property
                 if ([PXUtils isIOS6OrGreater])
                 {
                     if (context.shadowImage)
                     {
-                        [view px_setShadowImage:context.shadowImage];
+                        [item px_setShadowImage:context.shadowImage];
                     }
                     else
                     {
                         // 'fill' with a clear pixel
-                        [view px_setShadowImage:PXImageUtils.clearPixel];
+                        [item px_setShadowImage:PXImageUtils.clearPixel];
                     }
                 }
             }],

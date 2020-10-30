@@ -72,8 +72,8 @@ static const char STYLE_CHILDREN;
         
         attributedText.viewStylers = @[
                                        
-                                       [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-                                           
+                                       [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id view, PXAttributedTextStyler *styler, PXStylerContext *context) {
+                                           PXVirtualStyleableControl * styleable = (PXVirtualStyleableControl*) view;
                                            NSMutableDictionary *dict = [context attributedTextAttributes:weakSelf withDefaultText:weakSelf.text andColor:weakSelf.textColor];
                                            
                                            NSMutableAttributedString *attrString = nil;                                           
@@ -110,16 +110,19 @@ static const char STYLE_CHILDREN;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXFontStyler alloc] initWithCompletionBlock:^(PXUITextView *view, PXFontStyler *styler, PXStylerContext *context) {
-                [view px_setFont: context.font];
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                PXUITextView *item = (PXUITextView *) view;
+                [item px_setFont: context.font];
             }],
 
-            [[PXColorStyler alloc] initWithCompletionBlock:^(PXUITextView *view, PXColorStyler *styler, PXStylerContext *context) {
-                [view px_setTextColor: (UIColor *) [context propertyValueForName:@"color"]];
+            [[PXColorStyler alloc] initWithCompletionBlock:^(id view, PXColorStyler *styler, PXStylerContext *context) {
+                PXUITextView *item = (PXUITextView *) view;
+                [item px_setTextColor: (UIColor *) [context propertyValueForName:@"color"]];
             }],
 
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(PXUITextView *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                [view px_setText: context.text];
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id view, PXTextContentStyler *styler, PXStylerContext *context) {
+                PXUITextView *item = (PXUITextView *) view;
+                [item px_setText: context.text];
             }],
 
             [[PXGenericStyler alloc] initWithHandlers: @{

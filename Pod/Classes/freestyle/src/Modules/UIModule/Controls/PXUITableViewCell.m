@@ -355,8 +355,8 @@ static const char DETAIL_TEXT_LABEL_BACKGROUND_SET;
         attributedTextLabel.supportedPseudoClasses = PSEUDOCLASS_MAP.allKeys;
         
         attributedTextLabel.viewStylers = @[
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-                
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id v, PXAttributedTextStyler *styler, PXStylerContext *context) {
+                PXVirtualStyleableControl *styleable = (PXVirtualStyleableControl *) v;
                 UILabel *view = weakSelf.textLabel;
                 UIControlState state = ([context stateFromStateNameMap:PSEUDOCLASS_MAP]);
                 
@@ -400,8 +400,8 @@ static const char DETAIL_TEXT_LABEL_BACKGROUND_SET;
         attributedDetailTextLabel.supportedPseudoClasses = PSEUDOCLASS_MAP.allKeys;
         
         attributedDetailTextLabel.viewStylers = @[
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-                
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id v, PXAttributedTextStyler *styler, PXStylerContext *context) {
+                PXVirtualStyleableControl *styleable = (PXVirtualStyleableControl *) v;
                 UILabel *view = weakSelf.detailTextLabel;
                 UIControlState state = ([context stateFromStateNameMap:PSEUDOCLASS_MAP]);
                 
@@ -485,8 +485,9 @@ static const char DETAIL_TEXT_LABEL_BACKGROUND_SET;
         stylers = @[
             PXTransformStyler.sharedInstance,
             
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUITableViewCell *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                view.px_contentView.alpha = context.opacity;
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUITableViewCell *item = (PXUITableViewCell *)view;
+                item.px_contentView.alpha = context.opacity;
             }],
             
             PXShapeStyler.sharedInstance,

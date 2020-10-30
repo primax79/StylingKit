@@ -192,7 +192,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
         }];
         
         placeholder.viewStylers = @[
-             [[PXTextShadowStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+             [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
+                 PXUITextField * item = (PXUITextField *)view;
                  PXShadow *shadow = context.textShadow;
                  
                  // Get attributes from context, if any
@@ -212,8 +213,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
                  currentTextAttributes[NSShadowAttributeName] = nsShadow;
              }],
              
-             [[PXFontStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXFontStyler *styler, PXStylerContext *context) {
-                 
+             [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                 PXUITextField *item = (PXUITextField*) view;
                  // Get attributes from context, if any
                  NSMutableDictionary *currentTextAttributes = [context propertyValueForName:@"text-attributes"];
                  if(!currentTextAttributes)
@@ -226,8 +227,9 @@ static NSDictionary *PSEUDOCLASS_MAP;
                  
              }],
              
-             [[PXPaintStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXPaintStyler *styler, PXStylerContext *context) {
-                 
+             [[PXPaintStyler alloc] initWithCompletionBlock:^(id view, PXPaintStyler *styler, PXStylerContext *context) {
+                 PXUITextField * item = (PXUITextField *)view;
+
                  // Get attributes from context, if any
                  NSMutableDictionary *currentTextAttributes = [context propertyValueForName:@"text-attributes"];
                  if(!currentTextAttributes)
@@ -244,7 +246,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
                  }
              }],
              
-             [[PXTextContentStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXTextContentStyler *styler, PXStylerContext *context) {
+             [[PXTextContentStyler alloc] initWithCompletionBlock:^(id view, PXTextContentStyler *styler, PXStylerContext *context) {
+                 PXUITextField * item = (PXUITextField *)view;
 
                  [context setPropertyValue:context.text forName:@"text-value"];
              }],
@@ -263,8 +266,9 @@ static NSDictionary *PSEUDOCLASS_MAP;
         
         attributedText.viewStylers =
         @[
-          [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(PXVirtualStyleableControl *styleable, PXAttributedTextStyler *styler, PXStylerContext *context) {
-              
+          [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id view, PXAttributedTextStyler *styler, PXStylerContext *context) {
+              PXVirtualStyleableControl * styleable = (PXVirtualStyleableControl *)view;
+
               NSMutableDictionary *dict = [context attributedTextAttributes:weakSelf
                                                             withDefaultText:weakSelf.text
                                                                    andColor:weakSelf.textColor];              
@@ -304,7 +308,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
             PXBorderStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXFontStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXFontStyler *styler, PXStylerContext *context) {
+            [[PXFontStyler alloc] initWithCompletionBlock:^(id view, PXFontStyler *styler, PXStylerContext *context) {
+                PXUITextField * item = (PXUITextField *)view;
                 UIFont *font = context.font;
 
                 if (font)
@@ -314,7 +319,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
 
             }],
 
-            [[PXColorStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXColorStyler *styler, PXStylerContext *context) {
+            [[PXColorStyler alloc] initWithCompletionBlock:^(id view, PXColorStyler *styler, PXStylerContext *context) {
+                PXUITextField * item = (PXUITextField *)view;
                 UIColor *color = (UIColor *) [context propertyValueForName:@"color"];
                 
                 if(color)
@@ -323,8 +329,9 @@ static NSDictionary *PSEUDOCLASS_MAP;
                 }
             }],
 
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(PXUITextField *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                [view px_setText: context.text];
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id view, PXTextContentStyler *styler, PXStylerContext *context) {
+                PXUITextField * item = (PXUITextField *)view;
+                [item px_setText: context.text];
             }],
 
             [[PXGenericStyler alloc] initWithHandlers: @{

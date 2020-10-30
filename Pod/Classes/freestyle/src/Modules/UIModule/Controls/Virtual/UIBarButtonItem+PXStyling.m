@@ -197,20 +197,21 @@ void PXForceLoadUIBarButtonItemPXStyling() {}
             PXShapeStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(UIBarButtonItem *view, PXAttributedTextStyler *styler, PXStylerContext *context) {
-                
+            [[PXAttributedTextStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, id<PXStyler> styler, PXStylerContext *context) {
+                UIBarButtonItem *item = (UIBarButtonItem*)view;
                 UIControlState state = ([context stateFromStateNameMap:BUTTONS_PSEUDOCLASS_MAP]) ? [context stateFromStateNameMap:BUTTONS_PSEUDOCLASS_MAP] : UIControlStateNormal;
                 
-                NSDictionary *attribs = [view titleTextAttributesForState:state];
+                NSDictionary *attribs = [item titleTextAttributesForState:state];
                 
                 NSDictionary *mergedAttribs = [context mergeTextAttributes:attribs];
                 
-                [view setTitleTextAttributes:mergedAttribs
+                [item setTitleTextAttributes:mergedAttribs
                                     forState:state];
             }],
             
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(UIBarButtonItem *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                view.title = context.text;
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, id<PXStyler> styler, PXStylerContext *context) {
+                UIBarButtonItem *item = (UIBarButtonItem*)view;
+                item.title = context.text;
             }],
             
 
@@ -262,8 +263,10 @@ void PXForceLoadUIBarButtonItemPXStyling() {}
     
 + (PXStylerCompletionBlock) FontStylerCompletionBlock:(UIBarButtonItem *)target
 {
-    return ^(UIBarButtonItem *styleable, PXOpacityStyler *styler, PXStylerContext *context)
+    return ^(id<PXStyleable> view, PXOpacityStyler *styler, PXStylerContext *context)
     {
+        
+        UIBarButtonItem *styleable = (UIBarButtonItem*) view;
         NSDictionary *attributes = [context propertyValueForName:[NSString stringWithFormat:@"textAttributes-%@", context.activeStateName]];
         NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:attributes];
         currentTextAttributes[NSFontAttributeName] = context.font;
@@ -276,9 +279,9 @@ void PXForceLoadUIBarButtonItemPXStyling() {}
     
 + (PXStylerCompletionBlock) PXPaintStylerCompletionBlock:(UIBarButtonItem *)target
 {
-    return ^(UIBarButtonItem *styleable, PXOpacityStyler *styler, PXStylerContext *context)
+    return ^(id<PXStyleable> view, PXOpacityStyler *styler, PXStylerContext *context)
     {
-        
+        UIBarButtonItem *styleable = (UIBarButtonItem*) view;
         NSDictionary *attributes = [context propertyValueForName:[NSString stringWithFormat:@"textAttributes-%@", context.activeStateName]];
         NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:attributes];
         UIColor *color = (UIColor *)[context propertyValueForName:@"color"];

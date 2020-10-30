@@ -339,7 +339,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
                     PXBorderStyler.sharedInstance,
                     PXBoxShadowStyler.sharedInstance,
 
-                    [[PXTextContentStyler alloc] initWithCompletionBlock:^(UINavigationItem *item, id<PXStyler> styler, PXStylerContext *context) {
+                    [[PXTextContentStyler alloc] initWithCompletionBlock:^(id<PXStyleable> view, id<PXStyler> styler, PXStylerContext *context) {
+                        UINavigationItem * item = (UINavigationItem*) view;
                         item.title = context.text;
                     }],
 
@@ -347,8 +348,8 @@ static NSDictionary *PSEUDOCLASS_MAP;
                          @"text-transform" : ^(PXDeclaration *declaration, PXStylerContext *context) {
                             [context setPropertyValue:declaration.stringValue forName:@"transform"];
                          },
-                         } completionBlock:^(UINavigationItem *item, id<PXStyler> styler, PXStylerContext *context) {
-                             
+                         } completionBlock:^(id view, id<PXStyler> styler, PXStylerContext *context) {
+                             UINavigationItem * item = (UINavigationItem*) view;
                              NSString *transform = [context propertyValueForName:@"transform"];
                              NSString *value = item.title;
                              

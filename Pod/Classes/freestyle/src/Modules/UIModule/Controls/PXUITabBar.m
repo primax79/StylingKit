@@ -110,7 +110,8 @@
             PXBoxShadowStyler.sharedInstance,
 
             // shadow-* image properties
-            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(PXUITabBar *view, PXBarShadowStyler *styler, PXStylerContext *context) {
+            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(id view, PXBarShadowStyler *styler, PXStylerContext *context) {
+                PXUITabBar *item = (PXUITabBar *)view;
                 // iOS 6.x property
                 if ([PXUtils isIOS6OrGreater])
                 {

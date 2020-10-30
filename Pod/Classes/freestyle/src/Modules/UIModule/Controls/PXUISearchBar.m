@@ -60,14 +60,16 @@
             PXTransformStyler.sharedInstance,
             PXLayoutStyler.sharedInstance,
 
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUISearchBar *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                [view px_setTranslucent:(context.opacity < 1.0) ? YES : NO];
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUISearchBar *item = (PXUISearchBar *)view;
+                [item px_setTranslucent:(context.opacity < 1.0) ? YES : NO];
             }],
 
             PXFillStyler.sharedInstance,
             PXBoxShadowStyler.sharedInstance,
 
-            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(PXUISearchBar *view, PXTextShadowStyler *styler, PXStylerContext *context) {
+            [[PXTextShadowStyler alloc] initWithCompletionBlock:^(id view, PXTextShadowStyler *styler, PXStylerContext *context) {
+                PXUISearchBar *item = (PXUISearchBar *)view;
                 PXShadow *shadow = context.textShadow;
                 NSMutableDictionary *currentTextAttributes = [NSMutableDictionary dictionaryWithDictionary:[view scopeBarButtonTitleTextAttributesForState:UIControlStateNormal]];
 
@@ -82,8 +84,9 @@
                 [view px_setScopeBarButtonTitleTextAttributes:currentTextAttributes forState:UIControlStateNormal];
             }],
 
-            [[PXTextContentStyler alloc] initWithCompletionBlock:^(PXUISearchBar *view, PXTextContentStyler *styler, PXStylerContext *context) {
-                [view px_setText: context.text];
+            [[PXTextContentStyler alloc] initWithCompletionBlock:^(id view, PXTextContentStyler *styler, PXStylerContext *context) {
+                PXUISearchBar *item = (PXUISearchBar *)view;
+                [item px_setText: context.text];
             }],
 
             [[PXGenericStyler alloc] initWithHandlers: @{

@@ -131,8 +131,9 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
         stylers = @[
             PXLayoutStyler.sharedInstance,
 
-            [[PXOpacityStyler alloc] initWithCompletionBlock:^(PXUIToolbar *view, PXOpacityStyler *styler, PXStylerContext *context) {
-                [view px_setTranslucent: (context.opacity < 1.0) ? YES : NO];
+            [[PXOpacityStyler alloc] initWithCompletionBlock:^(id view, PXOpacityStyler *styler, PXStylerContext *context) {
+                PXUIToolbar * item = (PXUIToolbar*) view;
+                [item px_setTranslucent: (context.opacity < 1.0) ? YES : NO];
             }],
 
             PXShapeStyler.sharedInstance,
@@ -141,18 +142,20 @@ static NSDictionary *BUTTONS_PSEUDOCLASS_MAP;
             PXBoxShadowStyler.sharedInstance,
 
             // shadow-* image properties
-            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(PXUIToolbar *view, PXBarShadowStyler *styler, PXStylerContext *context) {
+            [[PXBarShadowStyler alloc] initWithCompletionBlock:^(id view, PXBarShadowStyler *styler, PXStylerContext *context) {
+                PXUIToolbar * item = (PXUIToolbar*) view;
+
                 // iOS 6.x property
                 if ([PXUtils isIOS6OrGreater])
                 {
                     if (context.shadowImage)
                     {
-                        [view px_setShadowImage:context.shadowImage forToolbarPosition:UIToolbarPositionAny];
+                        [item px_setShadowImage:context.shadowImage forToolbarPosition:UIToolbarPositionAny];
                     }
                     else
                     {
                         // 'fill' with a clear pixel
-                        [view px_setShadowImage:PXImageUtils.clearPixel forToolbarPosition:UIToolbarPositionAny];
+                        [item px_setShadowImage:PXImageUtils.clearPixel forToolbarPosition:UIToolbarPositionAny];
                     }
                 }
                 
